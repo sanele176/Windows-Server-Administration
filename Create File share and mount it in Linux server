@@ -1,0 +1,31 @@
+creating a Windows file server, setting up a file share, and then mounting the file share on a CentOS server:
+- Install File Server Role (if not installed):
+Go to Server Manager > Add Roles and Features.
+Select the File and Storage Services role.
+Complete the installation process.
+
+- Create a File Share:
+Open File Explorer and navigate to a folder (e.g., D:\SharedFiles).
+Right-click the folder and select Properties.
+Go to the Sharing tab and click Advanced Sharing.
+Enable Share this folder and give it a name (e.g., SharedFiles).
+Click Permissions, add or adjust users/groups (e.g., Everyone), and set permissions as needed (Read/Write/Full Control).
+
+- Check Network Sharing Settings:
+Go to Control Panel > Network and Sharing Center > Advanced Sharing Settings.
+Ensure File and printer sharing is enabled.
+Ensure the Password-protected sharing setting matches your desired access configuration
+
+- Install Required Packages on CentOS
+sudo yum install cifs-utils -y
+- Create a Mount Point:
+sudo mkdir /mnt/windows_share
+- Mount share
+sudo mount -t cifs -o username=Administrator,password=Password //192.168.8.145/Share /mnt/windows_share
+If share name has spaces escape characters. e.g : File Share
+sudo mount -t cifs -o username=Administrator,password=Password //192.168.8.145/File\ Share /mnt/windows_share
+
+- Persistent mount and udev, nofail option
+vi /etc/fstab
+//192.168.8.145/Share /mnt/windows_share cifs username=Administrator,password=Blackninja@123456,uid=1000,gid=1000,_netdev,nofail 0 0
+
