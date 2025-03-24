@@ -1,0 +1,48 @@
+- Step 1: Check the Current iLO Version
+  Before upgrading, check the installed version.
+   Method 1: Check via iLO Web Interface
+     Log in to iLO via your browser:
+     URL: https://<ILO-IP-Address>
+     Go to Information > Overview
+     Find "iLO Firmware Version"
+   Method 2: Check via SSH or Command Line
+     SSH into the iLO interface:
+     ssh Administrator@<ILO-IP-Address>
+     Run:
+     show /map1 firmware
+     Note the current version.
+
+- Step 2: Download the Latest iLO Firmware
+  Visit the HP Support Page:
+  Link: https://support.hpe.com
+  Search for your server model (e.g., ProLiant DL380 Gen10).
+  Navigate to Drivers & Firmware.
+  Download the latest iLO 5 firmware (.bin or .rpm file).
+
+- Step 3: Upgrade iLO Firmware
+  Method 1: Upgrade via iLO Web Interface (Easiest)
+    Log in to iLO via browser (https://<ILO-IP-Address>).
+    Go to Firmware & OS Software > Update Firmware.
+    Click Browse, select the .bin or .rpm firmware file you downloaded.
+    Click Upload and Start Upgrade.
+    Wait for the upgrade to complete (iLO may reboot).
+
+Method 2: Upgrade via SSH (Command Line)
+    Upload the firmware to iLO using SCP:
+    scp ilo5_2.79.bin Administrator@<ILO-IP-Address>:/tmp/
+    Log in to iLO via SSH:
+    ssh Administrator@<ILO-IP-Address>
+    Run the firmware upgrade command:
+    ilofw -f /tmp/ilo5_2.79.bin
+    Verify the update after the reboot:
+    show /map1 firmware
+Method 3: Upgrade via HP SUM (For Bulk Updates)
+   If managing multiple servers, use HPE Smart Update Manager (HP SUM):
+   Download HP SUM from HPE Support.
+   Add multiple servers for bulk iLO updates.
+   Deploy firmware updates automatically.
+
+- Step 4: Verify the Upgrade
+  After the update, check the new iLO version via:
+  iLO Web Interface: Information > Overview
+  show /map1 firmware
